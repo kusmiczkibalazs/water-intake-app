@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/fluid_intake_fragment">
+
+    <fragment
+        android:id="@+id/fluid_intake_fragment"
+        android:name="com.example.assignmentapp.fluidintake.FluidIntakeFragment"
+        android:label="FluidIntakeFragment"
+        tools:layout="@layout/fragment_fluid_intake" >
+        <action
+            android:id="@+id/action_fluidIntakeFragment_to_goalAchievedFragment"
+            app:destination="@id/goal_achieved_frament"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/goal_achieved_frament"
+        android:name="com.example.assignmentapp.goalachieved.GoalAchievedFragment"
+        android:label="GoalAchievedFragment"
+        tools:layout="@layout/fragment_goal_achieved" >
+        <action
+            android:id="@+id/action_goalAchievedFragment_to_fluidIntakeFragment"
+            app:destination="@id/fluid_intake_fragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="intakeQuantity"
+            app:argType="integer" />
+    </fragment>
+</navigation>

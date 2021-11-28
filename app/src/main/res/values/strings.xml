@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Folyadékbevitel napló</string>
+    <string name="intake_goal_text">Ajánlott napi folyadékfogyasztás: 3 liter</string>
+    <string name="intake_goal_button">Rögzít</string>
+    <string name="achievement_image">image showing success</string>
+    <string name="success_message">Siker! Célbevitel elérve!</string>
+    <string name="back">Vissza</string>
+    <string name="fail_message">Még nem sikerült elérni a célt</string>
+    <string name="input_prompt">Add meg fogyasztásod dl-ben</string>
+    <string name="clear_data_text">Adatok törlése</string>
+</resources>
