@@ -1,6 +1,5 @@
 package com.example.assignmentapp.fluidintake
 
-import android.app.Application
 import android.os.Build
 import android.os.Handler
 import android.text.format.DateUtils
@@ -10,10 +9,6 @@ import androidx.lifecycle.*
 import com.example.assignmentapp.database.FluidIntake
 import com.example.assignmentapp.database.FluidIntakeDatabaseDao
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.concurrent.schedule
 
 class FluidIntakeViewModel(
     dataSource: FluidIntakeDatabaseDao) : ViewModel() {
@@ -63,7 +58,6 @@ class FluidIntakeViewModel(
                 }, 100)
             }
             inputIntakeQuantity = -1
-            // TODO megjelenítés
         }
 
     }
@@ -78,7 +72,6 @@ class FluidIntakeViewModel(
     fun sumTodayIntake(): Int {
         var sumOfToday : Int = 0
         intakes.value?.forEach {
-            //var intakeDate: LocalDate = LocalDate.parse(it.intakeDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
             if (DateUtils.isToday(it.intakeTimeMilli)) {
                 sumOfToday += it.intakeQuantity
             }

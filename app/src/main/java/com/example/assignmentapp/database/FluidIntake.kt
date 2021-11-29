@@ -3,7 +3,6 @@ package com.example.assignmentapp.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.text.SimpleDateFormat
 
 @Entity(tableName = "fluid_intake_table")
 data class FluidIntake(
@@ -15,6 +14,5 @@ data class FluidIntake(
 
     @ColumnInfo(name = "intake_time_milli")
     var intakeTimeMilli: Long = System.currentTimeMillis()
-    //var intakeDate: String = SimpleDateFormat("yyyy-MM-dd HH:mm").format(System.currentTimeMillis()).toString()
 
 )
