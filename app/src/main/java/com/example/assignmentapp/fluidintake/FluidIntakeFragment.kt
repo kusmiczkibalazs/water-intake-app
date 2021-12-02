@@ -73,11 +73,15 @@ class FluidIntakeFragment : Fragment() {
         })
 
         fluidIntakeViewModel.clearButtonVisibility.observe(viewLifecycleOwner, Observer {
-            val clearButton :Button = binding.clearButton
+            val clearButton = binding.clearButton
+            val intakeList = binding.intakeList
             if (it == true) {
                 clearButton.visibility = View.VISIBLE
+                intakeList.visibility = View.VISIBLE
+
             } else {
                 clearButton.visibility = View.INVISIBLE
+                intakeList.visibility = View.INVISIBLE
             }
         })
 
@@ -86,7 +90,7 @@ class FluidIntakeFragment : Fragment() {
 
         fluidIntakeViewModel.intakes.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.submitList(it)
+                adapter.addHeaderSubmitList(it)
             }
         })
 

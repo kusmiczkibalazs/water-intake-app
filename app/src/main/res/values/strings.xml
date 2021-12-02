@@ -8,4 +8,5 @@
     <string name="fail_message">Még nem sikerült elérni a célt</string>
     <string name="input_prompt">Add meg fogyasztásod dl-ben</string>
     <string name="clear_data_text">Adatok törlése</string>
+    <string name="past_intakes">Korábbi fogyasztások:</string>
 </resources>

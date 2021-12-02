@@ -67,8 +67,7 @@
             app:layout_constraintEnd_toStartOf="@id/submit_intake"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/intake_input"
-            android:onClick="@{() -> fluidIntakeViewModel.onClear()}"
-            android:enabled="@{fluidIntakeViewModel.clearButtonVisibility}">
+            android:onClick="@{() -> fluidIntakeViewModel.onClear()}" >
         </Button>
 
         <androidx.recyclerview.widget.RecyclerView

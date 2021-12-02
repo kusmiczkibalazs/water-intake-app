@@ -11,30 +11,64 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.assignmentapp.R
 import com.example.assignmentapp.database.FluidIntake
 import com.example.assignmentapp.databinding.ListItemFluidIntakeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 
-class FluidIntakeAdapter: ListAdapter<FluidIntake, FluidIntakeAdapter.ViewHolder>(FluidIntakeDiffCallback()) {
+private const val ITEM_VIEW_TYPE_HEADER = 0
+private const val ITEM_VIEW_TYPE_ITEM = 1
 
-    @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item)
+class FluidIntakeAdapter: ListAdapter<DataItem, RecyclerView.ViewHolder>(FluidIntakeDiffCallback()) {
 
-        /*holder.quantity.text = "${item.intakeQuantity}dl fogyasztás"
-        holder.dateTime.text = SimpleDateFormat("yyyy-MM-dd HH:mm").format(item.intakeTimeMilli).toString()*/
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> {
+                val fluidIntakeItem = getItem(position) as DataItem.FluidIntakeItem
+                holder.bind(fluidIntakeItem.fluidIntake)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-/*        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_fluid_intake, parent, false)
-        return ViewHolder(view)*/
-        return ViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
+            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
+            else -> throw ClassCastException("Unknown viewType ${viewType}")
+        }
     }
 
-//    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-//        val quantity: TextView = itemView.findViewById(R.id.quantity)
-//        val dateTime: TextView = itemView.findViewById(R.id.dateTime)
-//    }
+    fun addHeaderSubmitList(list: List<FluidIntake>?) {
+        adapterScope.launch {
+            val items = when (list) {
+                null -> listOf(DataItem.Header)
+                else -> listOf(DataItem.Header) + list.map { DataItem.FluidIntakeItem(it) }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(items)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+            is DataItem.FluidIntakeItem -> ITEM_VIEW_TYPE_ITEM
+        }
+    }
+
+    class TextViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup): TextViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.header, parent, false)
+                return TextViewHolder(view)
+            }
+        }
+    }
 
     class ViewHolder private constructor(val binding: ListItemFluidIntakeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: FluidIntake) {
@@ -52,14 +86,25 @@ class FluidIntakeAdapter: ListAdapter<FluidIntake, FluidIntakeAdapter.ViewHolder
     }
 }
 
-class FluidIntakeDiffCallback : DiffUtil.ItemCallback<FluidIntake>() {
-    override fun areItemsTheSame(oldItem: FluidIntake, newItem: FluidIntake): Boolean {
-        return oldItem.intakeId == newItem.intakeId
+class FluidIntakeDiffCallback : DiffUtil.ItemCallback<DataItem>() {
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: FluidIntake, newItem: FluidIntake): Boolean {
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem == newItem
     }
+}
 
+sealed class DataItem {
+    data class FluidIntakeItem(val fluidIntake: FluidIntake): DataItem() {
+        override val id = fluidIntake.intakeId
+    }
+
+    object Header: DataItem() {
+        override val id = Long.MIN_VALUE
+    }
+
+    abstract val id: Long
 }
 
