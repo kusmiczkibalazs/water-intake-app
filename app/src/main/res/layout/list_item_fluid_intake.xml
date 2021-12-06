@@ -23,7 +23,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:textSize="18sp"
             android:textAlignment="center"
-            app:quantityString="@{fluidIntake}"/>
+            app:quantityString="@{fluidIntake}"
+            android:textColor="@color/text_grey"/>
 
         <TextView
             android:id="@+id/dateTime"
@@ -40,7 +41,8 @@
             android:textSize="18sp"
             android:layout_marginBottom="10dp"
             android:textAlignment="center"
-            app:dateTimeString="@{fluidIntake}"/>
+            app:dateTimeString="@{fluidIntake}"
+            android:textColor="@color/text_grey"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

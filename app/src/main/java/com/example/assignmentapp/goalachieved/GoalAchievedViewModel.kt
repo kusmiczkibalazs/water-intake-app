@@ -40,7 +40,7 @@ class GoalAchievedViewModel : ViewModel() {
                 val result = QuoteApi.retrofitService.getQuote()
                 _response.value = '"' + result.content + '"'
             } catch (e: Exception) {
-                _response.value = "Failure: " + e.message
+                _response.value = "Hiba: " + e.message
             }
         }
     }
