@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class FluidIntakeAdapter: ListAdapter<DataItem, RecyclerView.ViewHolder>(FluidIntakeDiffCallback()) {
+class FluidIntakeAdapter(val clickListener: FluidIntakeListener): ListAdapter<DataItem, RecyclerView.ViewHolder>(FluidIntakeDiffCallback()) {
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
@@ -25,7 +25,7 @@ class FluidIntakeAdapter: ListAdapter<DataItem, RecyclerView.ViewHolder>(FluidIn
         when (holder) {
             is ViewHolder -> {
                 val fluidIntakeItem = getItem(position) as DataItem.FluidIntakeItem
-                holder.bind(fluidIntakeItem.fluidIntake)
+                holder.bind(fluidIntakeItem.fluidIntake, clickListener)
             }
         }
     }
@@ -68,8 +68,9 @@ class FluidIntakeAdapter: ListAdapter<DataItem, RecyclerView.ViewHolder>(FluidIn
     }
 
     class ViewHolder private constructor(val binding: ListItemFluidIntakeBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: FluidIntake) {
+        fun bind(item: FluidIntake, clickListener: FluidIntakeListener) {
             binding.fluidIntake = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -105,3 +106,6 @@ sealed class DataItem {
     abstract val id: Long
 }
 
+class FluidIntakeListener(val clickListener: (intakeId: Long) -> Unit) {
+    fun onClick(fluidIntake: FluidIntake) = clickListener(fluidIntake.intakeId)
+}

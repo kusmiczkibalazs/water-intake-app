@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -84,7 +85,9 @@ class FluidIntakeFragment : Fragment() {
             }
         })
 
-        val adapter = FluidIntakeAdapter()
+        val adapter = FluidIntakeAdapter(FluidIntakeListener { intakeId ->
+            Toast.makeText(context, "Ez a 14. pontom :) [id: $intakeId]", Toast.LENGTH_LONG).show()
+        })
         binding.intakeList.adapter = adapter
 
         fluidIntakeViewModel.intakes.observe(viewLifecycleOwner, Observer {
